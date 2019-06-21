@@ -1,0 +1,82 @@
+import * as React from 'react';
+import { Text, View, Button, StyleSheet } from 'react-native';
+import Constants from 'expo-constants';
+let timer;
+export default class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+    };
+  }
+  startTimer = () => {
+    timer = setInterval(() => {
+      this.setState({
+        seconds: this.state.seconds + 1,
+      });
+      if (this.state.seconds == 60) {
+        this.setState({
+          seconds: 0,
+          minutes: this.state.minutes + 1,
+        });
+      }
+      if (this.state.minutes == 60) {
+        this.setState({
+          minutes: 0,
+          hours: this.state.hours + 1,
+        });
+      }
+    }, 1000);
+  };
+  endTimer = () => {
+    this.setState({
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+    });
+    clearInterval(timer);
+    alert('Stoped');
+  };
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={styles.timer}>
+          <Text style={styles.text}>{this.state.hours}:</Text>
+          <Text style={styles.text}>{this.state.minutes}:</Text>
+          <Text style={styles.text}>{this.state.seconds}</Text>
+        </View>
+        <Button
+          style={{ marginBottom: 20 }}
+          onPress={() => this.startTimer()}
+          title="Start Timer"
+          color="#006400"
+        />
+        <Button
+          onPress={() => this.endTimer()}
+          title="End Timer"
+          color="#FF0000"
+        />
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    height: 100,
+    padding: 20,
+    alignItems: 'center',
+    marginTop: 100,
+  },
+  timer: {
+    marginBottom: 30,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  text: {
+    fontSize: 40,
+  },
+});
